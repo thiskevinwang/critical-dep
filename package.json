@@ -1,5 +1,5 @@
 {
-  "name": "critical-dep",
+  "name": "swc-serverless-error",
   "private": true,
   "scripts": {
     "dev": "next dev",
