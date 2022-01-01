@@ -5,7 +5,8 @@ import styles from '../styles/Home.module.css'
 import { transformSync } from "@swc/core"
 
 export async function getStaticProps() {
-  const { code } = transformSync("function Foo() { console.log('test'); return <div>test</div> }", {
+  const arbitraryString = "function Foo() { console.log('test'); return <h3>test</h3> }"
+  const { code } = transformSync(arbitraryString, {
     minify: false,
     jsc: {
       minify: {
@@ -31,11 +32,10 @@ export async function getStaticProps() {
   }
 }
 
+const makeComponent = (code) => new Function("React", `return ${code}`)(React)
+
 export default function Home({ code }) {
-  const factory = new Function("React", `return ${code}`);
-  console.log(factory)
-  const Foo = factory(React)
-  console.log(Foo)
+  const MyComponent = makeComponent(code)
 
   return (
     <div className={styles.container}>
@@ -49,7 +49,7 @@ export default function Home({ code }) {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
-        <Foo />
+        <MyComponent />
       </main>
     </div>
   )
